@@ -1,0 +1,487 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>For Kritika — Take Care & Be Strong</title>
+<style>
+  :root{
+    --bg1: #090909;
+    --bg2: #1c1132;
+    --accent: #ff6b8a;
+    --accent-2: #ffd166;
+    --card-bg: rgba(255,255,255,0.06);
+    --glass: rgba(255,255,255,0.06);
+    --glass-2: rgba(255,255,255,0.03);
+    --text: #f7f7fb;
+    --muted: #cfcbd6;
+    --glass-border: rgba(255,255,255,0.08);
+  }
+
+  /* Page layout */
+  * { box-sizing: border-box; }
+  html,body { height:100%; margin:0; font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; background: linear-gradient(160deg,var(--bg1), var(--bg2)); color:var(--text); -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
+  .wrap { min-height:100vh; display:flex; align-items:center; justify-content:center; padding:32px; position:relative; overflow:hidden; }
+
+  /* Floating hearts background */
+  .hearts { position:absolute; inset:0; pointer-events:none; overflow:hidden; z-index:0; }
+  .heart {
+    position:absolute;
+    width:18px; height:18px;
+    transform:translate3d(0,0,0);
+    opacity:0.9;
+    will-change:transform, opacity;
+    animation: floatUp linear infinite;
+    filter: drop-shadow(0 6px 12px rgba(0,0,0,0.45));
+  }
+  @keyframes floatUp {
+    from { transform: translateY(120vh) scale(0.9) rotate(0deg); opacity:0; }
+    10% { opacity:1; }
+    to { transform: translateY(-20vh) scale(1.3) rotate(360deg); opacity:0; }
+  }
+
+  /* Main card */
+  .card {
+    position:relative;
+    z-index:2;
+    width:100%;
+    max-width:920px;
+    border-radius:18px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+    border: 1px solid var(--glass-border);
+    padding:28px;
+    display:grid;
+    grid-template-columns: 1fr 360px;
+    gap:20px;
+    box-shadow: 0 10px 40px rgba(4,4,8,0.6);
+    backdrop-filter: blur(6px) saturate(120%);
+  }
+
+  /* Left panel - message */
+  .main {
+    padding:18px;
+    display:flex; flex-direction:column; gap:14px;
+  }
+  .title {
+    display:flex; align-items:center; gap:14px;
+  }
+  .wave {
+    width:72px; height:72px; background:linear-gradient(135deg,var(--accent),#ff8fb3);
+    border-radius:14px;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow: 0 6px 20px rgba(255,107,138,0.14), inset 0 -6px 18px rgba(0,0,0,0.12);
+    transform-origin: 50% 30%;
+    animation: idleSwing 3s ease-in-out infinite;
+  }
+  @keyframes idleSwing {
+    0% { transform: rotate(-6deg); }
+    50% { transform: rotate(6deg); }
+    100% { transform: rotate(-6deg); }
+  }
+  .greeting {
+    font-size:20px; font-weight:700; letter-spacing: -0.02em;
+  }
+  .subtitle { color:var(--muted); font-size:14px; margin-top:-4px; }
+
+  .message {
+    margin-top:6px;
+    font-size:16px; line-height:1.5;
+    color: #f3eef6;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+    padding:14px;
+    border-radius:12px;
+    border:1px solid rgba(255,255,255,0.03);
+  }
+
+  /* Quote carousel / actions */
+  .quote {
+    margin-top:12px;
+    font-size:15px; font-weight:600;
+    color:var(--accent-2);
+    display:flex; align-items:center; gap:12px;
+  }
+  .quote small { color:var(--muted); font-weight:400; font-size:13px; }
+
+  .controls { display:flex; gap:10px; margin-top:12px; flex-wrap:wrap; }
+  button.btn {
+    border:0; padding:10px 14px; border-radius:12px; cursor:pointer; font-weight:700;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.44);
+    transition: transform .18s ease, box-shadow .18s ease, opacity .12s ease;
+    background: linear-gradient(90deg,var(--accent),#ff9db3);
+    color:white;
+  }
+  button.btn.secondary {
+    background: linear-gradient(90deg,#3a2a6a,#4b3988);
+    color:var(--accent-2);
+  }
+  button.btn:active { transform: translateY(2px) scale(.995); }
+  button.btn:disabled { opacity:0.6; cursor:not-allowed; }
+
+  /* Right panel - profile / note */
+  .side {
+    padding:18px;
+    border-left:1px solid rgba(255,255,255,0.03);
+    display:flex; flex-direction:column; gap:12px; align-items:center;
+  }
+  .avatar {
+    width:140px; height:140px; border-radius:18px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+    display:flex; align-items:center; justify-content:center;
+    border:1px solid rgba(255,255,255,0.04);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+    position:relative;
+  }
+  .avatar .initial {
+    font-size:42px; font-weight:800; color:var(--accent-2);
+    text-transform:uppercase;
+    letter-spacing:0.04em;
+  }
+  .name { font-weight:800; font-size:20px; margin-top:6px; text-align:center; }
+  .role { color:var(--muted); font-size:13px; text-align:center; }
+
+  textarea.note {
+    width:100%; min-height:110px; resize:vertical; padding:12px; border-radius:10px;
+    background:var(--glass-2); border:1px solid rgba(255,255,255,0.03); color:var(--text);
+    font-size:14px;
+  }
+  .small { font-size:13px; color:var(--muted); }
+
+  /* footer microcopy */
+  .footer {
+    margin-top:10px; font-size:12px; color:var(--muted);
+    display:flex; justify-content:space-between; gap:12px; align-items:center;
+  }
+
+  /* responsive */
+  @media (max-width:880px){
+    .card { grid-template-columns: 1fr; padding:18px; gap:14px; }
+    .side { border-left:0; border-top:1px solid rgba(255,255,255,0.03); padding-top:16px; }
+  }
+
+  /* small celebratory heart burst styles (created by JS) */
+  .burst-heart {
+    position: absolute;
+    width: 18px; height:18px;
+    transform-origin:center center;
+    pointer-events:none;
+  }
+
+  /* accessibility focus */
+  button:focus, textarea:focus { outline:3px solid rgba(255,215,180,0.12); outline-offset:3px; }
+
+</style>
+</head>
+<body>
+<div class="wrap" role="main" aria-labelledby="page-title">
+  <div class="hearts" id="heartsLayer" aria-hidden="true"></div>
+
+  <div class="card" role="article" aria-label="A message for Kritika">
+    <div class="main">
+      <div class="title">
+        <div class="wave" id="waveBtn" role="button" aria-label="Wave to Kritika" tabindex="0" title="Wave to Kritika">
+          <!-- friendly waving hand (SVG) -->
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6 2c.55 0 1 .45 1 1v8" stroke="#fff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M4 6c0-1.1.9-2 2-2" stroke="#fff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M8 4c.55 0 1 .45 1 1v6" stroke="#fff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 4v6" stroke="#fff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M16 6v8" stroke="#fff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M8 14c0 2.5 0 5 4 6 4-1 4-3.5 4-6" stroke="#fff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+
+        <div>
+          <div class="greeting" id="page-title">For Kritika — Take care of yourself, be strong ❤️</div>
+          <div class="subtitle">A little page to remind you: you are loved, you're capable, and you matter.</div>
+        </div>
+      </div>
+
+      <div class="message" id="mainMessage">
+        Hey Kritika — I want you to know that you're stronger than you think.
+        Whenever you feel low, remember there you are surrounded with best people.
+      </div>
+
+      <div class="quote" id="quoteBox" aria-live="polite">
+        <span id="quoteText">"You are the best.'"</span>
+        <small id="quoteAuthor">— Besan ka Laddu</small>
+      </div>
+
+      <div class="controls" role="group" aria-label="Actions">
+        <button class="btn" id="hugBtn" title="Send a hug">Send Hug 🤗</button>
+        <button class="btn secondary" id="encourageBtn" title="Get an encouraging quote">More Strength ✨</button>
+        <button class="btn" id="copyBtn" title="Copy message to share">Copy Message 📋</button>
+      </div>
+
+      <div class="footer">
+        <div class="small">Personalized for <strong>Kritika</strong></div>
+        <div class="small" id="timeStamp">Made with care — open this page whenever you need a boost.</div>
+      </div>
+    </div>
+
+    <aside class="side" aria-label="Kritika profile and note">
+      <div class="avatar" aria-hidden="true">
+        <div class="initial">K</div>
+      </div>
+
+      <div class="name">Kritika</div>
+      <div class="role">My Bestie — Stay Strong</div>
+
+      <label for="note" class="small" style="align-self:flex-start;">Write a short note (from you):</label>
+      <textarea id="note" class="note" placeholder="Write a few loving words for Kritika...">Kritika, take care of yourself. I'm proud of you, always. — From your bestie</textarea>
+
+      <div style="width:100%; display:flex; gap:8px; margin-top:6px;">
+        <button class="btn" id="saveNoteBtn" style="flex:1">Save Note</button>
+        <button class="btn secondary" id="shareBtn" style="flex:1">Open Share Modal</button>
+      </div>
+
+      <div style="width:100%; margin-top:6px; text-align:center;">
+        <small style="color:var(--muted)">Tip: Click "Send Hug" whenever she needs one.</small>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<!-- Canvas for confetti -->
+<canvas id="confettiCanvas" style="position:fixed; pointer-events:none; inset:0; z-index:9999;"></canvas>
+
+<script>
+  // ==== Helpful utilities ====
+  function rand(min, max) { return Math.random() * (max - min) + min; }
+  // create floating hearts background
+  (function createHearts(){
+    const layer = document.getElementById('heartsLayer');
+    const heartSVG = (color="#ff8fb3") => {
+      return `<svg viewBox="0 0 24 24" width="18" height="18" fill="${color}" xmlns="http://www.w3.org/2000/svg"><path d="M12 21s-7-4.86-9.4-7.07C-1.4 10.64 3.4 4 8.5 6.65 10.8 7.96 12 10 12 10s1.2-2.05 3.5-3.35C20.6 4 25.4 10.64 21.4 13.93 19 16.14 12 21 12 21z"/></svg>`;
+    };
+    const count = 16;
+    for(let i=0;i<count;i++){
+      const el = document.createElement('div');
+      el.className = 'heart';
+      const size = rand(12,28);
+      el.style.width = size + 'px';
+      el.style.height = size + 'px';
+      el.style.left = rand(2,98) + '%';
+      el.style.top = rand(60,110) + '%';
+      el.style.opacity = rand(0.6,1).toFixed(2);
+      el.style.transform = `translateY(0) scale(${rand(0.7,1.2)}) rotate(${rand(-40,40)}deg)`;
+      el.style.animationDuration = rand(10,26).toFixed(1) + 's';
+      el.style.animationDelay = rand(0,6).toFixed(1) + 's';
+      el.innerHTML = heartSVG(i % 3 === 0 ? "#ffd166" : "#ff6b8a");
+      layer.appendChild(el);
+    }
+  })();
+
+  // ==== Quote rotation ====
+  const quotes = [ 
+    ["You are braver than you believe, stronger than you seem and smarter than you think."],
+    ["Allow yourself to be proud of how far you've come.", "—"],
+    ["Tough times don't last. Tough people do. Keep going.", "—"]
+  ];
+  let qi = 0;
+  const quoteText = document.getElementById('quoteText');
+  const quoteAuthor = document.getElementById('quoteAuthor');
+  function showQuote(i){
+    const q = quotes[i];
+    quoteText.textContent = `"${q[0]}"`;
+    quoteAuthor.textContent = `— ${q[1] || ''}`;
+  }
+  showQuote(qi);
+  document.getElementById('encourageBtn').addEventListener('click', ()=>{
+    qi = (qi + 1) % quotes.length;
+    // subtle pulse
+    quoteText.parentElement.animate([{ transform: 'translateY(0)' }, { transform: 'translateY(-6px)' }, { transform: 'translateY(0)' }], { duration:360, easing:'cubic-bezier(.2,.9,.2,1)' });
+    showQuote(qi);
+  });
+
+  // ==== Wave animation + small gesture ====
+  const waveBtn = document.getElementById('waveBtn');
+  function doWaveAnimation() {
+    waveBtn.animate([
+      { transform: 'rotate(0deg) translateY(0)' },
+      { transform: 'rotate(-12deg) translateY(-3px)' },
+      { transform: 'rotate(14deg) translateY(-2px)' },
+      { transform: 'rotate(-8deg) translateY(0)' },
+      { transform: 'rotate(0deg) translateY(0)' }
+    ], { duration: 900, easing: 'ease-in-out' });
+    // bubble message
+    const mainMessage = document.getElementById('mainMessage');
+    mainMessage.animate([{ opacity: 1 }, { opacity: 0.6 }, { opacity: 1 }], { duration: 800 });
+  }
+  waveBtn.addEventListener('click', ()=> {
+    doWaveAnimation();
+    produceTinyHeartsAt(waveBtn);
+  });
+  waveBtn.addEventListener('keydown', (e)=> { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); waveBtn.click(); } });
+
+  // ==== Copy message ====
+  document.getElementById('copyBtn').addEventListener('click', async ()=>{
+    const text = document.getElementById('mainMessage').textContent.trim() + "\n\n— Love, your bestie";
+    try {
+      await navigator.clipboard.writeText(text);
+      alert('Message copied — you can paste and share it with Kritika!');
+    } catch (err) {
+      alert('Copy failed. You can manually select the text.');
+    }
+  });
+
+  // ==== Save note (localStorage) ====
+  const noteArea = document.getElementById('note');
+  const saveNoteBtn = document.getElementById('saveNoteBtn');
+  const storageKey = 'kritika_personal_note_v1';
+  // load saved
+  try {
+    const saved = localStorage.getItem(storageKey);
+    if (saved) noteArea.value = saved;
+  } catch(e){}
+  saveNoteBtn.addEventListener('click', () => {
+    try {
+      localStorage.setItem(storageKey, noteArea.value);
+      saveNoteBtn.animate([{ transform: 'translateY(0)' }, { transform: 'translateY(-4px)' }, { transform: 'translateY(0)' }], { duration: 240 });
+      alert('Note saved locally — it stays in your browser.');
+    } catch(e){
+      alert('Unable to save note in this browser.');
+    }
+  });
+
+  // ==== Share modal (simple open new window with share text) ====
+  document.getElementById('shareBtn').addEventListener('click', ()=>{
+    const shareText = noteArea.value || document.getElementById('mainMessage').textContent;
+    // prefer navigator.share when available
+    if (navigator.share) {
+      navigator.share({ title: "For Kritika — Take care", text: shareText }).catch(()=>{});
+    } else {
+      // fallback: open new window with message to copy
+      const w = window.open('', '_blank', 'width=500,height=420');
+      w.document.write('<pre style="font-family:system-ui; white-space:pre-wrap; padding:18px;">' + escapeHtml(shareText) + '</pre>');
+      w.document.title = "Share message for Kritika";
+    }
+  });
+
+  // ==== Heart burst + confetti when "Send Hug" clicked ====
+  const hugBtn = document.getElementById('hugBtn');
+  const confettiCanvas = document.getElementById('confettiCanvas');
+  const ctx = confettiCanvas.getContext('2d');
+  let confettiParts = [];
+  function resizeCanvas(){
+    confettiCanvas.width = innerWidth;
+    confettiCanvas.height = innerHeight;
+  }
+  resizeCanvas();
+  addEventListener('resize', resizeCanvas);
+
+  function produceTinyHeartsAt(el){
+    const rect = el.getBoundingClientRect();
+    const cx = rect.left + rect.width/2;
+    const cy = rect.top + rect.height/2;
+    for(let i=0;i<14;i++){
+      createFloatingHeart(cx + rand(-20,20), cy + rand(-8,8), rand(8,20));
+    }
+  }
+
+  function createFloatingHeart(x,y,size) {
+    const heart = document.createElement('div');
+    heart.className = 'burst-heart';
+    heart.innerHTML = `<svg viewBox="0 0 24 24" width="${size}" height="${size}" fill="${Math.random()>0.5? '#ff6b8a' : '#ffd166'}" xmlns="http://www.w3.org/2000/svg"><path d="M12 21s-7-4.86-9.4-7.07C-1.4 10.64 3.4 4 8.5 6.65 10.8 7.96 12 10 12 10s1.2-2.05 3.5-3.35C20.6 4 25.4 10.64 21.4 13.93 19 16.14 12 21 12 21z"/></svg>`;
+    heart.style.left = (x - size/2) + 'px';
+    heart.style.top = (y - size/2) + 'px';
+    document.body.appendChild(heart);
+    // animate via Web Animations API for smoothness
+    const dx = rand(-120,120), dy = rand(-220,-60), rot = rand(-720,720), dur = rand(720,1200);
+    heart.animate([
+      { transform: `translate(0px,0px) rotate(0deg)`, opacity:1 },
+      { transform: `translate(${dx}px, ${dy}px) rotate(${rot}deg)`, opacity:0 }
+    ], { duration: dur, easing: 'cubic-bezier(.17,.67,.42,1)'});
+    setTimeout(()=> heart.remove(), dur + 80);
+  }
+
+  hugBtn.addEventListener('click', () => {
+    // small feedback
+    hugBtn.disabled = true;
+    hugBtn.textContent = 'Hug sent 🤗';
+    setTimeout(()=>{ hugBtn.disabled=false; hugBtn.textContent='Send Hug 🤗'; }, 1200);
+
+    // create burst hearts at button
+    produceTinyHeartsAt(hugBtn);
+
+    // start confetti
+    startConfetti(120);
+    // gentle highlight of main message
+    document.getElementById('mainMessage').animate([{ transform:'scale(1)' }, { transform:'scale(1.01)' }, { transform:'scale(1)' }], { duration:600 });
+  });
+
+  // ==== Confetti engine (particles) ====
+  function startConfetti(count=80) {
+    confettiParts = [];
+    const w = confettiCanvas.width, h = confettiCanvas.height;
+    for(let i=0;i<count;i++){
+      confettiParts.push({
+        x: rand(0,w),
+        y: rand(-h,0),
+        vx: rand(-2,2),
+        vy: rand(2,7),
+        r: rand(6,16),
+        tilt: rand(-0.2,0.2),
+        color: (Math.random() > 0.5) ? '#ff6b8a' : '#ffd166',
+        rot: rand(0,360),
+        spin: rand(-6,6)
+      });
+    }
+    let t0 = performance.now();
+    (function frame(now){
+      const dt = Math.min(40, now - t0); t0 = now;
+      updateConfetti(dt/16);
+      drawConfetti();
+      if(confettiParts.length > 0) requestAnimationFrame(frame);
+    })(t0);
+    // auto stop after 3s
+    setTimeout(()=> confettiParts = [], 3000);
+  }
+  function updateConfetti(scale){
+    const w = confettiCanvas.width, h = confettiCanvas.height;
+    for(let p of confettiParts){
+      p.x += p.vx * scale * 2;
+      p.y += p.vy * scale * 2;
+      p.vy += 0.08 * scale;
+      p.rot += p.spin * scale;
+      if(p.y > h + 20) p.y = rand(-200, -20);
+    }
+  }
+  function drawConfetti(){
+    const c = ctx;
+    c.clearRect(0,0,confettiCanvas.width, confettiCanvas.height);
+    for(let p of confettiParts){
+      c.save();
+      c.translate(p.x, p.y);
+      c.rotate(p.rot * Math.PI / 180);
+      c.fillStyle = p.color;
+      c.fillRect(-p.r/2, -p.r/2, p.r, p.r*0.6);
+      c.restore();
+    }
+  }
+
+  // ==== small helper: escapeHtml ====
+  function escapeHtml(unsafe) {
+    return unsafe.replace(/[&<"']/g, function(m){ return ({'&':'&amp;','<':'&lt;','"':'&quot;',"'":'&#039;'}[m]); });
+  }
+
+  // ==== little easter: gently pulse the page title every 6s ====
+  (function gentlePulseTitle(){
+    const el = document.querySelector('.greeting');
+    setInterval(()=> {
+      el.animate([{ transform:'scale(1)' }, { transform:'scale(1.02)' }, { transform:'scale(1)' }], { duration:900, easing:'ease-in-out' });
+    }, 6000);
+  })();
+
+  // Accessibility: show timestamp in readable form
+  (function setTimestamp(){
+    const ts = document.getElementById('timeStamp');
+    const d = new Date();
+    ts.textContent = `Created on ${d.toLocaleDateString()} • Keep this page handy`;
+  })();
+
+  // Prevent accidental exits (optional). Uncomment if you want a confirm:
+  // window.addEventListener('beforeunload', (e) => { e.returnValue = "Are you sure?"; });
+
+</script>
+</body>
+</html>
